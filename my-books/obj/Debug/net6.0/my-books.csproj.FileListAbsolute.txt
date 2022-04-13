@@ -59,3 +59,4 @@ C:\Users\ncoded3\Desktop\workspace\my-books\my-books\obj\Debug\net6.0\my-books.g
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\obj\Debug\net6.0\ref\my-books.dll
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Humanizer.dll
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Newtonsoft.Json.dll
