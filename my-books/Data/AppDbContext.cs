@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace my_books.Data.Models
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
@@ -25,6 +27,8 @@ namespace my_books.Data.Models
             //    .Property(x => x.Contributors)
             //    .HasConversion(x => string.Join('|', x),
             //                   x => x.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Book> Books { get; set; }
