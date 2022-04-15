@@ -19,17 +19,13 @@ namespace my_books.Controllers
             _authorService = authorService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost("add-author")]
         [ValidateModelAttribte]
         public IActionResult AddAuthor([FromBody] AuthorVM author)
         {
-            if(ModelState.IsValid)
-            {
-                _authorService.AddAuthor(author);
-                return Ok();
-            }
-            return BadRequest(ModelState);
+            _authorService.AddAuthor(author);
+            return Ok();
         }
 
         [HttpGet("get-author-with-books-by-id/{id}")]
