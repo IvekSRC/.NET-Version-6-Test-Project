@@ -1,8 +1,11 @@
-﻿namespace my_books.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace my_books.Data.Models
 {
     public class Author
     {
         public int Id { get; set; }
+
         public string FullName { get; set; }
 
         //Navigation Properties

@@ -1,7 +1,10 @@
-﻿namespace my_books.Data.Models.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace my_books.Data.Models.ViewModels
 {
     public class AuthorVM
     {
+        [MinLength(1)]
         public string FullName { get; set; }
     }
 

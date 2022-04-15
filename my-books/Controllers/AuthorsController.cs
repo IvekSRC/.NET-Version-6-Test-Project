@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Catel.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using my_books.Auth;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
 
@@ -16,11 +19,17 @@ namespace my_books.Controllers
             _authorService = authorService;
         }
 
+        //[Authorize]
         [HttpPost("add-author")]
+        [ValidateModelAttribte]
         public IActionResult AddAuthor([FromBody] AuthorVM author)
         {
-            _authorService.AddAuthor(author);
-            return Ok();
+            if(ModelState.IsValid)
+            {
+                _authorService.AddAuthor(author);
+                return Ok();
+            }
+            return BadRequest(ModelState);
         }
 
         [HttpGet("get-author-with-books-by-id/{id}")]

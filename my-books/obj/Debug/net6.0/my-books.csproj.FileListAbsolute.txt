@@ -66,3 +66,4 @@ C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Microsoft.
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\ncoded3\Desktop\workspace\my-books\my-books\bin\Debug\net6.0\Catel.Core.dll
