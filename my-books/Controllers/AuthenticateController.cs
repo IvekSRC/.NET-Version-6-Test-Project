@@ -43,10 +43,16 @@ namespace my_books.Controllers
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
-
+              
                 foreach (var userRole in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                }
+
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                foreach (var userClaim in userClaims)
+                {
+                    authClaims.Add(new Claim(userClaim.Type, userClaim.Value, userClaim.ValueType, userClaim.Issuer));
                 }
 
                 var token = GetToken(authClaims);
@@ -69,10 +75,11 @@ namespace my_books.Controllers
 
             if (userExists != null)
                 return StatusCode(
-                    StatusCodes.Status500InternalServerError, 
-                    new Response { 
-                        Status = "Error", 
-                        Message = "User already exists!" 
+                    StatusCodes.Status500InternalServerError,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "User already exists!"
                     }
                 );
 
@@ -87,23 +94,27 @@ namespace my_books.Controllers
 
             if (!result.Succeeded)
                 return StatusCode(
-                    StatusCodes.Status500InternalServerError, 
-                    new Response { 
-                        Status = "Error", 
-                        Message = "User creation failed! Please check user details and try again." 
+                    StatusCodes.Status500InternalServerError,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "User creation failed! Please check user details and try again."
                     }
                 );
+
+            await _userManager.AddToRoleAsync(user, UserRoles.User);
+            await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.View));
 
             return Ok(new Response { Status = "Success", Message = "User created successfully!" });
         }
 
         [HttpPost]
         [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
+        public async Task<IActionResult> RegisterSuperAdmin([FromBody] RegisterModel model)
         {
             var userExists = await _userManager.FindByNameAsync(model.Username);
             if (userExists != null)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Admin already exists!" });
 
             IdentityUser user = new()
             {
@@ -111,24 +122,84 @@ namespace my_books.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
+
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "User creation failed! Please check user details and try again."
+                    });
+            }
+            else
             {
                 await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
                 await _userManager.AddToRoleAsync(user, UserRoles.User);
+
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.View));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Create));
+
+                return Ok(new Response { Status = "Success", Message = "Admin created successfully!" });
             }
-            return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+        }
+
+        [HttpPost]
+        [Route("register-super-admin")]
+        public async Task<IActionResult> RegisterSuperAdmin()
+        {
+            RegisterModel model = new RegisterModel
+            {
+                Username = "super-admin",
+                Password = "Password@123",
+                Email = "super-admin@gmail.com"
+            };
+
+            var userExists = await _userManager.FindByNameAsync(model.Username);
+            if (userExists != null)
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "Super Admin already exists!"
+                    });
+
+            IdentityUser user = new()
+            {
+                Email = model.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.Username
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new Response
+                    {
+                        Status = "Error",
+                        Message = "User creation failed! Please check user details and try again."
+                    });
+            }
+            else
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.SuperAdmin);
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                await _userManager.AddToRoleAsync(user, UserRoles.User);
+
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.View));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Create));
+
+                return Ok(new Response { Status = "Success", Message = "Super Admin created successfully!" });
+            }
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)

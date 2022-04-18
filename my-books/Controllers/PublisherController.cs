@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using my_books.ActionResult;
+using my_books.Auth;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
 using my_books.Exceptions;
@@ -18,6 +20,7 @@ namespace my_books.Controllers
             _publisherService = publisherService;
         }
 
+        [Authorize(Permissions.Users.Create)]
         [HttpPost("add-publisher")]
         public IActionResult AddPublisher([FromBody] PublisherVM publisher)
         {
@@ -36,35 +39,24 @@ namespace my_books.Controllers
             }
         }
 
+        [Authorize(Permissions.Users.View)]
         [HttpGet("get-publisher-by-id/{id}")]
         public IActionResult GetPublisherById(int id)
-        {
-            //throw new Exception("This is an exception that will be handled by middleware");
-            
+        {            
             var _response = _publisherService.GetPublisherById(id);
 
             if(_response != null)
             {
-                //var _responseObj = new CustomActionResultVM()
-                //{
-                //    Publisher = _response
-                //};
-
-                //return new CustomActionResult(_responseObj);
                 return Ok(_response);
             }
             else
             {
-                //var _responseObj = new CustomActionResultVM()
-                //{
-                //    Exception = new Exception("This is comming from publishers controller")
-                //};
-
-                //return new CustomActionResult(_responseObj);
                 return NotFound();
             }
         }
 
+        //[Authorize(Roles = UserRoles.User, Policy = Permissions.Users.View)]
+        [Authorize(Permissions.Users.View)]
         [HttpGet("get-publisher-books-authors/{id}")]
         public IActionResult GetPublisherData(int id)
         {
@@ -72,6 +64,7 @@ namespace my_books.Controllers
             return Ok(_response);
         }
 
+        [Authorize(Permissions.Users.Delete)]
         [HttpDelete("delete-publisher-by-id/{id}")]
         public IActionResult DeletePublisherId(int id)
         {

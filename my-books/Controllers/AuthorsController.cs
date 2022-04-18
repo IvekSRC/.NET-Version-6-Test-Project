@@ -19,7 +19,7 @@ namespace my_books.Controllers
             _authorService = authorService;
         }
 
-        [Authorize]
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost("add-author")]
         [ValidateModelAttribte]
         public IActionResult AddAuthor([FromBody] AuthorVM author)

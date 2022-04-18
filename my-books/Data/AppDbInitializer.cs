@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using my_books.Auth;
 using my_books.Data.Models;
 
 namespace my_books.Data
@@ -12,7 +11,7 @@ namespace my_books.Data
             {
                 var context = serviceScope.ServiceProvider.GetService<AppDbContext>();
 
-                if (!context.Books.Any())
+                if (context?.Books.Any() == false)
                 {
                     context.Books.AddRange
                     (
@@ -40,6 +39,8 @@ namespace my_books.Data
 
                     context.SaveChanges();
                 }
+
+                
             }
         }
     }
