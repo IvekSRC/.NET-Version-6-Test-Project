@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using my_books.Auth;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
+using my_books.Paging;
 
 namespace my_books.Controllers
 {
@@ -26,9 +27,9 @@ namespace my_books.Controllers
 
         [Authorize(Permissions.Users.View)]
         [HttpGet("get-all-books")]
-        public IActionResult GetAllBooks()
+        public IActionResult GetAllBooks(PagingProperties prop)
         {
-            var allBooks = _booksService.GetAllBooks();
+            var allBooks = _booksService.GetAllBooks(prop);
             return Ok(allBooks);
         }
 

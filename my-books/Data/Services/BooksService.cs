@@ -1,5 +1,9 @@
 ﻿using my_books.Data.Models;
 using my_books.Data.Models.ViewModels;
+using my_books.Paging;
+using PagedList;
+using PagedList.Mvc;
+using System.Linq;
 
 namespace my_books.Data.Services
 {
@@ -42,13 +46,43 @@ namespace my_books.Data.Services
             }
         }
 
-        public List<Book> GetAllBooks()
+        public List<BookVMBasic> GetAllBooks(PagingProperties prop)
         {
-            var allBooks = _context.Books.ToList();
-            return allBooks;
-        }
+            var searchedBooks = _context.Books.ToList();
 
-        // public List<Book> GetAllBooks() => _context.Books.ToList();
+            if (prop.StartsWith != null)
+            {
+                searchedBooks = searchedBooks.Where(x => x.Title.StartsWith(prop.StartsWith)).ToList();
+            }
+
+            switch (prop.SortCriterium)
+            {
+                case "Comedy":
+                    searchedBooks = searchedBooks.Where(x => x.Genre == "Comedy").ToList();
+                    break;
+                case "Biography":
+                    searchedBooks = searchedBooks.Where(x => x.Genre == "Biography").ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            if (prop.SortOrder == true)
+            {
+                searchedBooks = searchedBooks.OrderByDescending(x => x.Id).ToList();
+            }
+
+            return PaginatedList<BookVMBasic>.Create(searchedBooks.Select(book => new BookVMBasic
+            {
+                Title = book.Title,
+                Description = book.Description,
+                isRead = book.isRead,
+                DateRead = book.DateRead,
+                Rate = book.Rate,
+                Genre = book.Genre,
+                CoverUrl = book.CoverUrl
+            }).ToList().AsQueryable(), prop.PageNum, prop.PageSize);
+        }
 
         public BookWithAuthorsVM GetBookById(int bookId)
         {
