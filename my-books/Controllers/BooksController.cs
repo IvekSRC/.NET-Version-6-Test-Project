@@ -27,7 +27,7 @@ namespace my_books.Controllers
 
         [Authorize(Permissions.Users.View)]
         [HttpGet("get-all-books")]
-        public IActionResult GetAllBooks(PagingProperties prop)
+        public IActionResult GetAllBooks([FromQuery]PagingProperties prop)
         {
             var allBooks = _booksService.GetAllBooks(prop);
             return Ok(allBooks);
