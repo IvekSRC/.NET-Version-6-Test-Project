@@ -11,10 +11,10 @@ namespace my_books.Controllers
     [Authorize(Roles = UserRoles.SuperAdmin)]
     [Route("api/[controller]")]
     [ApiController]
-    public class UserManagmentController : ControllerBase
+    public class UserManagementController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        public UserManagmentController(
+        public UserManagementController(
             UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
@@ -29,7 +29,21 @@ namespace my_books.Controllers
                 return BadRequest(user);
             else
             {
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, roleVM.Permission));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, ("Permissions.Users." + roleVM.Permission)));
+                return Ok(user);
+            }
+        }
+
+        [HttpDelete("remove-permission")]
+        public async Task<IActionResult> RemovePermission([FromBody] RoleVM roleVM)
+        {
+            IdentityUser user = await _userManager.FindByIdAsync(roleVM.RoleId);
+
+            if (user == null)
+                return BadRequest(user);
+            else
+            {
+                await _userManager.RemoveClaimAsync(user, new Claim(CustomClaimTypes.Permission, ("Permissions.Users." + roleVM.Permission)));
                 return Ok(user);
             }
         }

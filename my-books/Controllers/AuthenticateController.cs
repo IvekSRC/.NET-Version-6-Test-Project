@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using my_books.Auth;
@@ -15,16 +13,11 @@ namespace my_books.Controllers
     public class AuthenticateController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public AuthenticateController(
-            UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager,
-            IConfiguration configuration)
+        public AuthenticateController(UserManager<IdentityUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _configuration = configuration;
         }
 
@@ -145,60 +138,6 @@ namespace my_books.Controllers
                 await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Create));
 
                 return Ok(new Response { Status = "Success", Message = "Admin created successfully!" });
-            }
-        }
-
-        [HttpPost]
-        [Route("register-super-admin")]
-        public async Task<IActionResult> RegisterSuperAdmin()
-        {
-            RegisterModel model = new RegisterModel
-            {
-                Username = "super-admin",
-                Password = "Password@123",
-                Email = "super-admin@gmail.com"
-            };
-
-            var userExists = await _userManager.FindByNameAsync(model.Username);
-            if (userExists != null)
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new Response
-                    {
-                        Status = "Error",
-                        Message = "Super Admin already exists!"
-                    });
-
-            IdentityUser user = new()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new Response
-                    {
-                        Status = "Error",
-                        Message = "User creation failed! Please check user details and try again."
-                    });
-            }
-            else
-            {
-                await _userManager.AddToRoleAsync(user, UserRoles.SuperAdmin);
-                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
-
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.View));
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Edit));
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Delete));
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaimTypes.Permission, Permissions.Users.Create));
-
-                return Ok(new Response { Status = "Success", Message = "Super Admin created successfully!" });
             }
         }
 

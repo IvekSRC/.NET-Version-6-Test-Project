@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using my_books.Auth;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
 
@@ -14,6 +16,7 @@ namespace my_books.Controllers
             _booksService = booksService;
         }
 
+        [Authorize(Permissions.Users.Create)]
         [HttpPost("add-book-wtih-authors")]
         public IActionResult AddBook([FromBody]BookVM book)
         {
@@ -21,6 +24,7 @@ namespace my_books.Controllers
             return Ok();
         }
 
+        [Authorize(Permissions.Users.View)]
         [HttpGet("get-all-books")]
         public IActionResult GetAllBooks()
         {
@@ -28,6 +32,7 @@ namespace my_books.Controllers
             return Ok(allBooks);
         }
 
+        [Authorize(Permissions.Users.View)]
         [HttpGet("get-book-by-id/{id}")]
         public IActionResult GetBookById(int id)
         {
@@ -35,6 +40,7 @@ namespace my_books.Controllers
             return Ok(book);
         }
 
+        [Authorize(Permissions.Users.Edit)]
         [HttpPut("update-book-by-id/{id}")]
         public IActionResult UpdateBookById(int id, [FromBody]BookVM book)
         {
@@ -42,6 +48,7 @@ namespace my_books.Controllers
             return Ok(updatedBook);
         }
 
+        [Authorize(Permissions.Users.Delete)]
         [HttpDelete("delete-book-by-id/{id}")]
         public IActionResult DeleteBookById(int id)
         {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using my_books.Auth;
+using my_books.Data;
 using my_books.Data.Models;
 using my_books.Data.Services;
 using my_books.Exceptions;
@@ -21,7 +22,6 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
     {
         var result = new ValidationFailedResult(context.ModelState);
 
-        // TODO: add `using System.Net.Mime;` to resolve MediaTypeNames
         result.ContentTypes.Add(MediaTypeNames.Application.Json);
         result.ContentTypes.Add(MediaTypeNames.Application.Xml);
 
@@ -61,6 +61,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Adding Authorization
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(Permissions.Users.View, builder =>
@@ -115,6 +116,13 @@ app.ConfigureBuildInExceptionHandler();
 
 app.MapControllers();
 
-//AppDbInitializer.Seed(app);
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+    AppDbInitializer.Seed(app);
+    await AppDbInitializer.SeedBasicUserAsync(userManager);
+}
 
 app.Run();

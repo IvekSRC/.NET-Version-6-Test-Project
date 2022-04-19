@@ -55,7 +55,6 @@ namespace my_books.Controllers
             }
         }
 
-        //[Authorize(Roles = UserRoles.User, Policy = Permissions.Users.View)]
         [Authorize(Permissions.Users.View)]
         [HttpGet("get-publisher-books-authors/{id}")]
         public IActionResult GetPublisherData(int id)
