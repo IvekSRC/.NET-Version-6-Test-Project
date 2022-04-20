@@ -1,6 +1,4 @@
-﻿using Catel.Data;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using my_books.Auth;
 using my_books.Data.Models.ViewModels;

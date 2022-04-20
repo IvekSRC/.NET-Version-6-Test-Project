@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using my_books.ActionResult;
 using my_books.Auth;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;

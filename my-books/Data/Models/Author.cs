@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace my_books.Data.Models
+﻿namespace my_books.Data.Models
 {
     public class Author
     {

@@ -28,6 +28,8 @@ namespace my_books.Data.Models
             //    .HasConversion(x => string.Join('|', x),
             //                   x => x.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList());
 
+
+
             base.OnModelCreating(modelBuilder);
         }
 
