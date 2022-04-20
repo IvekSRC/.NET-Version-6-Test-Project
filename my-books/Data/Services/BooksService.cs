@@ -65,6 +65,8 @@ namespace my_books.Data.Services
                     break;
 
                 default:
+                    if (prop.SortOrder == true)
+                        query = query.OrderByDescending(x => x.Id);
                     break;
             }
 
