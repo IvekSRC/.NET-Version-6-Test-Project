@@ -63,6 +63,12 @@ namespace my_books.Repository
 
             if (_publisher != null)
             {
+                foreach (var book in _context.Books.Where(b => b.PublisherId == publisherId))
+                {
+                    book.PublisherId = null;
+                    book.Publisher = null;
+                }
+
                 _context.Publishers.Remove(_publisher);
                 _context.SaveChanges();
 

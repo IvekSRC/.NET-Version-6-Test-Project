@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace my_books.Data.Models
 {
@@ -30,7 +31,15 @@ namespace my_books.Data.Models
 
             modelBuilder
                 .Entity<Publisher>()
-                .ToTable("Publishers", b => b.IsTemporal());
+                .ToTable(
+                    "Publishers",
+                    b => b.IsTemporal(
+                        b =>
+                        {
+                            b.HasPeriodStart("ValidFrom");
+                            b.HasPeriodEnd("ValidTo");
+                            b.UseHistoryTable("PublisherHistoricalData");
+                        }));
 
             base.OnModelCreating(modelBuilder);
         }
@@ -39,5 +48,14 @@ namespace my_books.Data.Models
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book_Author> Books_Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            // Pre-convention model configuration goes here
+
+            configurationBuilder
+                .Properties<string>()
+                .HaveMaxLength(1024);
+        }
     }
 }

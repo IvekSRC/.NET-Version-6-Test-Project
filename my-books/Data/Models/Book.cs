@@ -14,7 +14,7 @@
 
         //Navigation Properties
         public int? PublisherId { get; set; }
-        public Publisher Publisher { get; set; }
+        public Publisher? Publisher { get; set; }
 
         public List<Book_Author> Book_Authors { get; set; }
     }
