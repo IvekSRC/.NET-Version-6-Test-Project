@@ -75,5 +75,20 @@ namespace my_books.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(Permissions.Users.Edit)]
+        [HttpPost("return-publisher-by-id/{id}")]
+        public IActionResult ReturnDeletedPublisher(int id)
+        {
+            try
+            {
+                _publisherService.ReturnDeletedPublisher(id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

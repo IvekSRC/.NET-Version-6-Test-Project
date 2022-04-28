@@ -5242,19 +5242,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ncoded3\\.nuget\\packages\\": {}
+    "C:\\Users\\Ivan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ncoded3\\Desktop\\workspace\\my-books\\my-books\\my-books.csproj",
+      "projectUniqueName": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
       "projectName": "my-books",
-      "projectPath": "C:\\Users\\ncoded3\\Desktop\\workspace\\my-books\\my-books\\my-books.csproj",
-      "packagesPath": "C:\\Users\\ncoded3\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ncoded3\\Desktop\\workspace\\my-books\\my-books\\obj\\",
+      "projectPath": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
+      "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ncoded3\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

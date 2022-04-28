@@ -9,7 +9,7 @@ namespace my_books.Data.Services
     {
         private readonly IBookRepo _bookRepo;
 
-        public BooksService(BookRepo bookRepo)
+        public BooksService(IBookRepo bookRepo)
         {
             _bookRepo = bookRepo;
         }

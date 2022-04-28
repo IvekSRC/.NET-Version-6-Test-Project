@@ -8,6 +8,7 @@ using my_books.Data;
 using my_books.Data.Models;
 using my_books.Data.Services;
 using my_books.Exceptions;
+using my_books.Repository;
 using my_books.ValidationResponse;
 using System.Net.Mime;
 using System.Text;
@@ -85,6 +86,10 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddTransient<IBookRepo, BookRepo>();
+builder.Services.AddTransient<IAuthorRepo, AuthorRepo>();
+builder.Services.AddTransient<IPublisherRepo, PublisherRepo>();
+
 builder.Services.AddTransient<BooksService>();
 builder.Services.AddTransient<AuthorService>();
 builder.Services.AddTransient<PublishersService>();
@@ -120,9 +125,10 @@ var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 using (var scope = scopeFactory.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     AppDbInitializer.Seed(app);
-    await AppDbInitializer.SeedBasicUserAsync(userManager);
+    await AppDbInitializer.SeedBasicUserAsync(userManager, roleManager);
 }
 
 app.Run();

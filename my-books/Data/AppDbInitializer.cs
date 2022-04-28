@@ -57,8 +57,15 @@ namespace my_books.Data
             }
         }
 
-        public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager)
+        public static async Task SeedBasicUserAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            if (!await roleManager.RoleExistsAsync(UserRoles.SuperAdmin))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.SuperAdmin));
+            if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            if (!await roleManager.RoleExistsAsync(UserRoles.User))
+                await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
             RegisterModel model = new RegisterModel
             {
                 Username = "super-admin",

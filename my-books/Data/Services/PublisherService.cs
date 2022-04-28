@@ -10,7 +10,7 @@ namespace my_books.Data.Services
     {
         private readonly IPublisherRepo _publisherRepo;
 
-        public PublishersService(PublisherRepo publisherRepo)
+        public PublishersService(IPublisherRepo publisherRepo)
         {
             _publisherRepo = publisherRepo;
         }
@@ -41,6 +41,13 @@ namespace my_books.Data.Services
                 throw new Exception($"The publisher with id {id} does not exist");
         }
 
+        public void ReturnDeletedPublisher(int publisherId)
+        {
+            var isReturned = _publisherRepo.ReturnDeletedPublisher(publisherId);
+
+            if (isReturned == false)
+                throw new Exception($"Not found.");
+        }
         private bool StringStartsWithNumber(string name) => (Regex.IsMatch(name, @"^\d"));
     }
 }

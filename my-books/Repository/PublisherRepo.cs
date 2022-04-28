@@ -1,4 +1,5 @@
-﻿using my_books.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using my_books.Data.Models;
 using my_books.Data.Models.ViewModels;
 
 namespace my_books.Repository
@@ -64,6 +65,38 @@ namespace my_books.Repository
             {
                 _context.Publishers.Remove(_publisher);
                 _context.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public Boolean ReturnDeletedPublisher(int publisherId)
+        {
+
+            var _publisher = _context
+                .Publishers
+                .TemporalAll()
+                .Where(e => e.Id == publisherId)
+                .FirstOrDefault();
+
+            if (_publisher is not null)
+            {
+                _context.Database.OpenConnection();
+                try
+                {
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Publishers ON;");
+                    _context.Publishers.Add(_publisher);
+                    _context.SaveChanges();
+                    _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Publishers OFF;");
+                }
+                finally
+                {
+                    _context.Database.CloseConnection();
+                }
 
                 return true;
             }

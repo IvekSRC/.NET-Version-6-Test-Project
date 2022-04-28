@@ -7,7 +7,7 @@ namespace my_books.Data.Services
     {
         private readonly IAuthorRepo _authorRepo;
 
-        public AuthorService(AuthorRepo authorRepo)
+        public AuthorService(IAuthorRepo authorRepo)
         {
             _authorRepo = authorRepo;
         }
