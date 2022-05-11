@@ -111,5 +111,25 @@ namespace my_books.Repository
                 return false;
             }
         }
+
+        public List<Publisher> TestFullSearch(string forSearch)
+        {
+            var query = _context.Publishers.Where(x => EF.Functions.FreeText(x.Name, forSearch)).ToList();
+            //var searchString = "%" + forSearch + "%";
+            //var query = from e in _context.Publishers
+            //            where EF.Functions.Like(e.Name, searchString) 
+            //            select e;
+
+            var result = query.ToList();
+
+            if(query is not null)
+            {
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

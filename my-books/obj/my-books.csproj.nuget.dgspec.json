@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj": {}
+    "C:\\Users\\ncoded3\\Desktop\\workspace\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj": {
+    "C:\\Users\\ncoded3\\Desktop\\workspace\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
+        "projectUniqueName": "C:\\Users\\ncoded3\\Desktop\\workspace\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
         "projectName": "my-books",
-        "projectPath": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
-        "packagesPath": "C:\\Users\\Ivan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Ivan\\Desktop\\workspace\\Test Projekat\\complete-guide-to-aspnetcore-web-api\\my-books\\obj\\",
+        "projectPath": "C:\\Users\\ncoded3\\Desktop\\workspace\\complete-guide-to-aspnetcore-web-api\\my-books\\my-books.csproj",
+        "packagesPath": "C:\\Users\\ncoded3\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ncoded3\\Desktop\\workspace\\complete-guide-to-aspnetcore-web-api\\my-books\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Ivan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ncoded3\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,9 +40,21 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[11.0.1, )"
+            },
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[11.0.0, )"
+            },
             "Catel.Core": {
               "target": "Package",
               "version": "[5.12.22, )"
+            },
+            "GroupDocs.Search": {
+              "target": "Package",
+              "version": "[21.8.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -65,6 +77,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.3, )"
+            },
+            "Microsoft.SqlServer.SqlManagementObjects": {
+              "target": "Package",
+              "version": "[161.47008.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -105,7 +121,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

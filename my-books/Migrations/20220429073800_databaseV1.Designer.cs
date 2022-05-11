@@ -12,8 +12,8 @@ using my_books.Data.Models;
 namespace my_books.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220428141250_V1")]
-    partial class V1
+    [Migration("20220429073800_databaseV1")]
+    partial class databaseV1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

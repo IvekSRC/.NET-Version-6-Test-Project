@@ -10,6 +10,7 @@ namespace my_books.Repository
         PublisherWithBooksAndAuthorsVM? GetPublisherData(int publisherId);
         Boolean DeletePublisherById(int publisherId);
         Boolean ReturnDeletedPublisher(int publisherId);
+        List<Publisher> TestFullSearch(string forSearch);
 
     }
 }

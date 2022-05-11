@@ -48,6 +48,16 @@ namespace my_books.Data.Services
             if (isReturned == false)
                 throw new Exception($"Not found.");
         }
+
+        public List<Publisher> TestFullSearch(string forSearch)
+        {
+            var isFound = _publisherRepo.TestFullSearch(forSearch);
+
+            if (isFound == null)
+                throw new Exception($"Not found.");
+            else
+                return isFound;
+        }
         private bool StringStartsWithNumber(string name) => (Regex.IsMatch(name, @"^\d"));
     }
 }

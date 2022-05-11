@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using my_books.Auth;
+using my_books.Data.Models;
 using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
 using my_books.Exceptions;
@@ -84,6 +85,21 @@ namespace my_books.Controllers
             {
                 _publisherService.ReturnDeletedPublisher(id);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [Authorize(Permissions.Users.View)]
+        [HttpGet("find-publisher-by-name/{name}")]
+        public ActionResult <List<Publisher>> TestFullSearch(string name)
+        {
+            try
+            {
+                var res = _publisherService.TestFullSearch(name);
+                return Ok(res);
             }
             catch (Exception ex)
             {
