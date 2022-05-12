@@ -86,6 +86,8 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddTransient<IBookRepo, BookRepo>();
 builder.Services.AddTransient<IAuthorRepo, AuthorRepo>();
 builder.Services.AddTransient<IPublisherRepo, PublisherRepo>();

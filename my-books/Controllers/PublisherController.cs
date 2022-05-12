@@ -106,5 +106,20 @@ namespace my_books.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(Permissions.Users.View)]
+        [HttpGet("get-all-publishers")]
+        public ActionResult <List<PublisherVM>> GetAllPublishers()
+        {
+            try
+            {
+                var result = _publisherService.GetAllPublisher();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

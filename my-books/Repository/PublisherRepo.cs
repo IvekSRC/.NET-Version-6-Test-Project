@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using my_books.Data.Models;
 using my_books.Data.Models.ViewModels;
 
@@ -7,10 +8,12 @@ namespace my_books.Repository
     public class PublisherRepo : IPublisherRepo
     {
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PublisherRepo(AppDbContext context)
+        public PublisherRepo(AppDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public Publisher AddPublisher(PublisherVM publisher)
@@ -130,6 +133,38 @@ namespace my_books.Repository
             {
                 return null;
             }
+        }
+
+        public List<PublisherVM>? GetAllPublisher()
+        {
+            var returnedPublishers = _context.Publishers.ToList();
+            var returnedPublishersVM = new List<PublisherVM>();
+
+            if (returnedPublishers is not null)
+            {
+                foreach (var item in returnedPublishers)
+                {
+                    returnedPublishersVM.Add(_mapper.Map<PublisherVM>(item));
+                }
+
+                return returnedPublishersVM;
+            }
+            else
+                return null;
+            
+
+            /*
+            
+            // Kraci zapis
+             
+            var returnedPublishersVM = _mapper.Map<List<PublisherVM>>(_context.Publishers.ToList());
+
+            if (returnedPublishersVM is not null)
+                return returnedPublishersVM;
+            else
+                return null;
+
+            */
         }
     }
 }

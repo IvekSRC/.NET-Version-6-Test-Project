@@ -1,20 +1,26 @@
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using my_books.Controllers;
 using my_books.Data.Models;
+using my_books.Data.Models.ViewModels;
 using my_books.Data.Services;
 using my_books.Repository;
 using NUnit.Framework;
 using System;
-using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace my_books_tests
 {
-    public class PublishersServiceTest
+    public class PublisherControllerTest
     {
-        IServiceCollection? _services;
-        IServiceProvider? _serviceProvider;
+        private IServiceCollection _services;
+        private IServiceProvider _serviceProvider;
 
-        private PublishersService? _publisherService;
+        private PublisherController? _publisherController;
 
         [OneTimeSetUp]
         public void Setup()
@@ -29,28 +35,21 @@ namespace my_books_tests
             _services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             _serviceProvider = _services.BuildServiceProvider();
 
-            _publisherService = (PublishersService?)_serviceProvider.GetService(typeof(PublishersService));
+            _publisherController = new PublisherController((PublishersService)_serviceProvider.GetService(typeof(PublishersService)));
         }
 
         [Test, Order(1)]
-        public void IsReturnedPublisher()
+        public void TestGetPublisherAction()
         {
-            var result = _publisherService?.GetPublisherById(4);
-            Assert.That(result, Is.Not.Null);
+            var actionResult = _publisherController.GetPublisherById(4);
+            Assert.That(actionResult, Is.TypeOf<OkObjectResult>());
         }
 
         [Test, Order(2)]
-        public void TestReturnedNameForPublisher()
+        public void TestDeletePublisherAction()
         {
-            var result = _publisherService?.GetPublisherById(4);
-            Assert.That(result?.Name, Is.EqualTo("Ivan Petkovic"));
-        }
-
-        [Test, Order(3)]
-        public void TestCountReturnedPublishers()
-        {
-            var result = _publisherService.GetAllPublisher();
-            Assert.That(result.Count, Is.EqualTo(7));
+            var actionResult = _publisherController.DeletePublisherId(4);
+            Assert.That(actionResult, Is.TypeOf<OkResult>());
         }
     }
 }

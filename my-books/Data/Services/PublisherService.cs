@@ -58,6 +58,16 @@ namespace my_books.Data.Services
             else
                 return isFound;
         }
+
+        public List<PublisherVM> GetAllPublisher()
+        {
+            var returnedResult = _publisherRepo.GetAllPublisher();
+
+            if (returnedResult == null)
+                throw new Exception($"Not found.");
+            else
+                return returnedResult;
+        }
         private bool StringStartsWithNumber(string name) => (Regex.IsMatch(name, @"^\d"));
     }
 }
